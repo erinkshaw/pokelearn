@@ -52,7 +52,8 @@
       </div>
     `
     insertPokeInfo.innerHTML = loading
-    const apiUri = pokemon.find((poke) => match.name === poke.name).url
+    let apiUri = pokemon.find((poke) => match.name === poke.name).url.split('https://pokeapi.co/')
+    apiUri = `http://pokeapi.salestock.net/${apiUri[1]}`
     fetch(apiUri)
     .then(blob => blob.json())
     .then(poke => {
