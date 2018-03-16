@@ -66,7 +66,7 @@
         `
       }).join('')
       const abilities = poke.abilities.map(ability => {
-        if (ability.length) return `<li>${ability.ability.name}<li>`
+        if (ability.ability.name.length) return `<li>${ability.ability.name}<li>`
         else return ''
       }).join('')
       const moves = poke.moves.map(move => `<option>${move.move.name}</option>`).join()
