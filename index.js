@@ -13,7 +13,7 @@
     })
     .then(poke => {
       const ul = poke.map(poke => {
-        return `<li id=${poke.name}>${poke.name}</li>`
+        return `<li id=${poke.name} class="poke">${poke.name}</li>`
       }).join('')
       suggestions.innerHTML = ul;
     })
@@ -27,13 +27,13 @@
 
   function findPoke() {
     if (!this.value) {
-      document.querySelectorAll('ul li').forEach(li => li.removeAttribute('class'))
+      document.querySelectorAll('.poke').forEach(li => li.classList.remove('hide'))
     }
     matches = findMatches(this.value, pokemon)
-    document.querySelectorAll('ul li').forEach(li => {
+    document.querySelectorAll('.poke').forEach(li => {
       const isMatch = po => po.name === li.id
-      if (!matches.find(isMatch)) li.setAttribute('class', 'hide')
-      else if (matches.find(isMatch)) li.removeAttribute('class')
+      if (!matches.find(isMatch)) li.classList.add('hide')
+      else if (matches.find(isMatch)) li.classList.remove('hide')
     })
   }
 
@@ -52,26 +52,30 @@
       </div>
     `
     insertPokeInfo.innerHTML = loading
-    let apiUri = pokemon.find((poke) => match.name === poke.name).url.split('https://pokeapi.co/')
+    let apiUri = pokemon.find(poke => match.name === poke.name).url.split('https://pokeapi.co/')
     apiUri = `http://pokeapi.salestock.net/${apiUri[1]}`
+
     fetch(apiUri)
     .then(blob => blob.json())
     .then(poke => {
-      console.log(poke)
+      insertPokeInfo.innerHTML = makeHTML(poke)
+    })
+    .catch(console.error)
+  }
+
+  function makeHTML(poke) {
+    console.log(poke)
       const stats = poke.stats.map(stat => {
         return `
           <tr>
             <td>${stat.stat.name}<td>
-            <td>${stat.effort}<td>
+            <td>${stat.base_stat}<td>
           <tr>
         `
       }).join('')
-      const abilities = poke.abilities.map(ability => {
-        if (ability.ability.name.length) return `<li>${ability.ability.name}<li>`
-        else return ''
-      }).join('')
-      const moves = poke.moves.map(move => `<option>${move.move.name}</option>`).join()
-      const addPoke = `
+      const abilities = poke.abilities.map(ability => `<li>${ability.ability.name}</li>`).join('')
+      const moves = poke.moves.map(move => `<option>${move.move.name}</option>`).join('')
+      return `
       <div>
         <div>
           <img src="img/${poke.name}.png"/>
@@ -85,9 +89,9 @@
         </div>
         <div>
         <h2>Abilities</h2>
-        <ol>
+        <ul>
           ${abilities}
-        </ol>
+        </ul>
         <div>
         <h2>Stats</h2>
         <table>
@@ -97,9 +101,6 @@
         <div>
       </div>
       `
-      insertPokeInfo.innerHTML = addPoke
-    })
-    .catch(console.error)
   }
 
   searchInput.addEventListener('click', showPoke);

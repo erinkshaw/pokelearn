@@ -4,7 +4,8 @@ body {
 
 .container {
   display: flex;
-  justify-content: space-around
+  justify-content: space-around;
+  margin-top: -2em;
 }
 
 img {
@@ -13,6 +14,18 @@ img {
 
 .pokemon {
   display: none;
+}
+
+#poke-info {
+  width: 50%;
+  display: flex;
+  justify-content: center;
+}
+
+#poke-search {
+  width: 50%;
+  display: flex;
+  justify-content: center;
 }
 
 .hide {
