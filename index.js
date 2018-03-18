@@ -8,7 +8,7 @@
   fetch('poke.json')
     .then(blob => blob.json())
     .then(poke => {
-      pokemon = poke
+      pokemon.push(...poke)
       return poke
     })
     .then(poke => {
